@@ -151,7 +151,7 @@ export default {
                     "last_name": person.last_name,
                     "age": person.age,
                     "email": person.email,
-                    "secret": person.secret
+                    "secret": btoa(person.secret)
                 }
             });
 

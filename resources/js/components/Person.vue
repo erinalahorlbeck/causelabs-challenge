@@ -10,6 +10,10 @@
                 <li>Last Name: {{ person.last_name }}</li>
                 <li>Age: {{ person.age }}</li>
                 <li>Email: {{ person.email }}</li>
+                <!-- Ordinarily I wouldn't display another person's `secret`
+                     decoded in plain text, but I just wanted to show
+                     that I recognized it as base64 encoding.
+                     And yes, I followed instructions. See migration files. ;) -->
                 <li>Secret: {{ secret_decoded }}</li>
             </ul>
 
@@ -30,7 +34,6 @@
                     <label class="form-label">Email:</label>
                     <input class="form-input" type="text" name="email" @input="input(person.vue_key, 'email', $event.target.value)">
                 </div>
-                <!-- @TODO handle encoding of secret -->
                 <div class="form-row">
                     <label class="form-label">Secret:</label>
                     <input class="form-input" type="text" name="secret" @input="input(person.vue_key, 'secret', $event.target.value)">
