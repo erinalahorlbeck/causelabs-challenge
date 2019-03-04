@@ -32,9 +32,9 @@ class PostToApiTest extends TestCase
             ->assertJson([
                 'message' => 'People saved!',
                 'data' => [
-                    "email_addresses" => "[\"lindaladee@causelabs.com\",\"codyduder@causelabs.com\"]",
+                    "email_addresses" => '"lindaladee@causelabs.com,codyduder@causelabs.com"',
                     "original_data" => "[{\"first_name\":\"ladee\",\"last_name\":\"linter\",\"age\":99,\"email\":\"lindaladee@causelabs.com\",\"secret\":\"cmVzb3VyY2UgdmlvbGF0aW9u\",\"name\":\"ladee linter\"},{\"first_name\":\"cody\",\"last_name\":\"duder\",\"age\":38,\"email\":\"codyduder@causelabs.com\",\"secret\":\"VXNlIHRoaXMgc2VjcmV0IHBocmFzZSBzb21ld2hlcmUgaW4geW91ciBjb2RlJ3MgY29tbWVudHM=\",\"name\":\"cody duder\"}]",
-                    // "ip_address" => request()->ip(),
+                    "ip_address" => request()->ip(),
                     // "updated_at" => "2019-03-03 20:08:27",
                     // "created_at" => "2019-03-03 20:08:27",
                 ]

@@ -17,7 +17,7 @@ class PeopleController extends Controller
     public function index(Request $request)
     {
         // Normally I would paginate, and not expose all properties
-        // carelessly by using an Api Resource class. This is just a
+        // carelessly, by using an Api Resource class. This is just a
         // simple example.
         $people = Person::all();
 
@@ -69,18 +69,16 @@ class PeopleController extends Controller
         $json = json_decode( $request->input('people') );
         $people = collect($json->data);
 
-        // sort
+        // Sort
         $people = $people->sortByDesc('age');
 
-        // append
+        // Append
         $people = $people->each(function($person) {
             $person->name = $person->first_name . ' ' . $person->last_name;
         });
 
-        // Coding Challenge asks for a 'comma-separated list' of email
-        // addressses. I'm choosing to believe that a string that represents
-        // a json array of emails counts as a 'comma-separated list'... ;)
-        $email_addresses = json_encode( $people->pluck('email')->toArray() );
+        // Final vars
+        $email_addresses = '"' . implode(',', $people->pluck('email')->toArray() ) . '"';
         $original_data   = json_encode( array_values( $people->toArray() ) );
 
         return compact('email_addresses', 'original_data');
