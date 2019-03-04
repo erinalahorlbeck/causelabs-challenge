@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="card-header">
-            #{{ person.vue_key }} - {{ person.first_name }} {{ person.last_name }}
+            &bull; {{ person.first_name }} {{ person.last_name }}
         </div>
 
         <div class="card-body">
@@ -14,27 +14,27 @@
             </ul>
 
             <ul v-if="editable">
-                <li>
-                    First Name:
-                    <input type="text" name="first_name" @input="input(person.vue_key, 'first_name', $event.target.value)">
-                </li>
-                <li>
-                    Last Name:
-                    <input type="text" name="last_name" @input="input(person.vue_key, 'last_name', $event.target.value)">
-                </li>
-                <li>
-                    Age:
-                    <input type="number" min="0" max="140" name="age" @input="input(person.vue_key, 'age', $event.target.value)">
-                </li>
-                <li>
-                    Email:
-                    <input type="text" name="email" @input="input(person.vue_key, 'email', $event.target.value)">
-                </li>
+                <div class="form-row">
+                    <label class="form-label">First Name:</label>
+                    <input class="form-input" type="text" name="first_name" @input="input(person.vue_key, 'first_name', $event.target.value)">
+                </div>
+                <div class="form-row">
+                    <label class="form-label">Last Name:</label>
+                    <input class="form-input" type="text" name="last_name" @input="input(person.vue_key, 'last_name', $event.target.value)">
+                </div>
+                <div class="form-row">
+                    <label class="form-label">Age:</label>
+                    <input class="form-input" type="number" min="0" max="140" name="age" @input="input(person.vue_key, 'age', $event.target.value)">
+                </div>
+                <div class="form-row">
+                    <label class="form-label">Email:</label>
+                    <input class="form-input" type="text" name="email" @input="input(person.vue_key, 'email', $event.target.value)">
+                </div>
                 <!-- @TODO handle encoding of secret -->
-                <li>
-                    Secret:
-                    <input type="text" name="secret" @input="input(person.vue_key, 'secret', $event.target.value)">
-                </li>
+                <div class="form-row">
+                    <label class="form-label">Secret:</label>
+                    <input class="form-input" type="text" name="secret" @input="input(person.vue_key, 'secret', $event.target.value)">
+                </div>
             </ul>
         </div>
     </div>
@@ -103,7 +103,8 @@
 </script>
 
 <style lang="scss">
-.card-header {
-    font-weight: bold;
-}
+    .form-row, .form-label, .form-input { display: block }
+    .form-row { margin-bottom: 1rem; }
+    .form-input { width: 100% }
+    .card-header { font-weight: bold; }
 </style>

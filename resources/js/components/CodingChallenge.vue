@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8 align-left">
+            <div class="col-md-8 align-left mb-2">
 
                 <div v-for="person in people" :key="person.vue_key">
 
@@ -21,15 +21,23 @@
                     Add Person
                 </button>
 
-                <button class="button" @click="submitList">
+                <button v-if="!saving" class="button" @click="submitList">
                     Submit List
                 </button>
 
+                <button v-if="saving" class="button" disabled="disabled">
+                    Submitting...
+                </button>
+
+                <span v-if="success_saving" class="success">
+                    {{ success_saving }}
+                </span>
+
+                <span v-if="error_saving" class="error">
+                    <strong>{{ error_saving }}</strong>
+                </span>
             </div>
 
-            <div v-if="error_saving" class="col-md-8 align-left error">
-                <strong>{{ error_saving }}</strong>
-            </div>
         </div>
     </div>
 </template>
@@ -64,7 +72,8 @@ export default {
             peopleCount: 2,
 
             saving: false,
-            error_saving: false
+            error_saving: false,
+            success_saving: false
         }
     },
 
@@ -126,19 +135,51 @@ export default {
             return person.vue_key > 2
         },
 
+        /**
+         * Get the final data to submit to the API.
+         * 
+         * @return  {String} Stringified JSON data
+         */
+        getSubmitData()
+        {
+            var peopleCollection = collect(this.people);
+
+            // This ensures we submit data without the `vue_key` prop
+            peopleCollection.transform((person) => {
+                return {
+                    "first_name": person.first_name,
+                    "last_name": person.last_name,
+                    "age": person.age,
+                    "email": person.email,
+                    "secret": person.secret
+                }
+            });
+
+            return {
+                people: JSON.stringify({
+                    data: peopleCollection.toArray()
+                })
+            };
+        },
+
         submitList()
         {
-            var peopleModified = this.stripVueKey(this.people);
-
+            this.error_saving = false;
             this.saving = true;
 
-            axios.post('/api/v1/people', {
-                people: JSON.stringify(peopleModified)
-            }).then((response) => {
+            var data = this.getSubmitData();
 
+            axios.post('/api/v1/people', data).then((response) => {
+                this.success_saving = 'Saved!';
+                var t = setTimeout(() => {
+                    this.success_saving = false;
+                }, 2250);
             }).catch((err) => {
                 console.error(err);
                 this.error_saving = err;
+            }).then(() => {
+                // always executed
+                this.saving = false;
             });
         }
     },
@@ -150,11 +191,9 @@ export default {
 </script>
 
 <style lang="scss">
-.align-left {
-    text-align: left;
-}
-
-.error {
-    color: #a00;
-}
+    .mb-2 { margin-bottom: 2rem; }
+    .align-left { text-align: left; }
+    .success, .error { float: right; }
+    .success { font-weight: bold; color: #050; }
+    .error { color: #a00; }
 </style>
